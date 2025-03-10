@@ -50,16 +50,27 @@ public class EmployeeService {
 //    }
 
     // Create employee
-    public void createEmployee(Employee employee) {
+//    public void createEmployee(Employee employee) {
+//        if(employee.getEmergencyContact()!= null) {
+//            employee.getEmergencyContact().setEmployee(employee);
+//        }
+//        employeeRepo.save(employee);
+//
+//    }
+    public void createEmployee(Employee employee, MultipartFile file) {
         if(employee.getEmergencyContact()!= null) {
             employee.getEmergencyContact().setEmployee(employee);
         }
         employeeRepo.save(employee);
+        if(file != null) {
+            int employeeId = Math.toIntExact(employee.getId());
+            uploadImage(employeeId, file);
+        }
 
     }
 
 
-    public void updateEmployee(int empId, Employee employee) {
+    public void updateEmployee(int empId, Employee employee, MultipartFile file) {
        Employee empExist = employeeRepo.findById((long)empId).orElse(null);
        if (empExist != null) {
            empExist.setFirstName(employee.getFirstName());
@@ -73,8 +84,15 @@ public class EmployeeService {
                emergencyContact.setEmployee(empExist);
                empExist.setEmergencyContact(emergencyContact);
            }
+           if(file != null) {
+               int employeeId = Math.toIntExact(employee.getId());
+               uploadImage(employeeId, file);
+           }
        }
+
+
        employeeRepo.save(empExist);
+
     }
 
     public void deleteEmployee(int empId) {
@@ -130,7 +148,7 @@ public class EmployeeService {
             Path filePath = Paths.get(profileImage.getAbsolutePath() ,fileName);
             file.transferTo(filePath.toFile());
 
-            String dbPath = "/ProfileImages/" + file.getOriginalFilename();
+            String dbPath = "/ProfileImages/" + fileName;
             employee.setFilePath(dbPath);
             employeeRepo.save(employee);
 

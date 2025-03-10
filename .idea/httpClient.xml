@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="HttpClientEndpointsTabState">
+    <option name="requestToText" value="&lt;CachedHttpClientTabRequests&gt;&#10;  &lt;entry key=&quot;6727cb89fc9569dac2042648b83e76ded77064fc&quot; value=&quot;###&amp;#10;POST http://localhost:8000/api/employee&amp;#10;Content-Type: application/json&amp;#10;&amp;#10;{&amp;#10;  &amp;quot;firstName&amp;quot;: &amp;quot;&amp;quot;,&amp;#10;  &amp;quot;lastName&amp;quot;: &amp;quot;&amp;quot;,&amp;#10;  &amp;quot;email&amp;quot;: &amp;quot;&amp;quot;,&amp;#10;  &amp;quot;phoneNumber&amp;quot;: &amp;quot;&amp;quot;,&amp;#10;  &amp;quot;emergencyContact&amp;quot;: {},&amp;#10;  &amp;quot;department&amp;quot;: {},&amp;#10;  &amp;quot;projects&amp;quot;: [],&amp;#10;  &amp;quot;filePath&amp;quot;: &amp;quot;&amp;quot;&amp;#10;}&quot; /&gt;&#10;  &lt;entry key=&quot;2b59e50269212e6fc2d1091369d7634570fcd9ae&quot; value=&quot;###&amp;#10;GET http://localhost:8000/api/employee/{{emp_id}}&quot; /&gt;&#10;&lt;/CachedHttpClientTabRequests&gt;" />
+  </component>
+</project>

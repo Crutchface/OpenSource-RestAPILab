@@ -3,11 +3,14 @@ package org.oosd.restapidemo.Controller;
 import org.oosd.restapidemo.entity.Employee;
 import org.oosd.restapidemo.service.EmployeeService;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
+import javax.swing.*;
 import java.util.List;
+import java.util.Map;
 
 @RestController
 @RequestMapping("/api")
@@ -33,14 +36,23 @@ public class EmployeeController {
         return employeeService.getEmployeeById(emp_id);
     }
 
-    @PostMapping("/employee")
-    public ResponseEntity<Employee> addEmployee(@RequestBody Employee employee){
-        employeeService.createEmployee(employee);
-        return new ResponseEntity<>(employee, HttpStatus.CREATED);
-    }
-    @PutMapping("/employee/{emp_id}")
-    public ResponseEntity<Employee> updateEmployee(@RequestBody Employee employee, @PathVariable int emp_id){
-        employeeService.updateEmployee(emp_id, employee);
+//    @PostMapping("/employee")
+//    public ResponseEntity<Employee> createEmployee(@RequestBody Employee employee){
+//        employeeService.createEmployee(employee);
+//        return new ResponseEntity<>(employee,HttpStatus.CREATED);
+//    }
+@PostMapping(value = "/employee", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
+public ResponseEntity<Employee> createEmployee(@RequestParam(value = "file", required = false) MultipartFile file ,
+                                               @ModelAttribute("employee") Employee employee) {
+    employeeService.createEmployee(employee, file);
+    return new ResponseEntity<>(employee, HttpStatus.CREATED);
+}
+
+
+    @PutMapping(value = "/employee/{emp_id}",consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
+    public ResponseEntity<Employee> updateEmployee(@RequestParam(value = "file", required = false) MultipartFile file,
+                                                   @ModelAttribute Employee employee, @PathVariable int emp_id){
+        employeeService.updateEmployee(emp_id, employee, file);
         return new ResponseEntity<>(employee, HttpStatus.OK);
     }
 
@@ -96,5 +108,6 @@ public class EmployeeController {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Error uploading image");
         }
     }
+
 
 }

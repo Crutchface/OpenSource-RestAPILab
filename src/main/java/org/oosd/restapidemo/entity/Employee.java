@@ -14,33 +14,36 @@ import java.util.Set;
 @Entity
 public class Employee {
     @Id
-    @JsonIgnore
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(nullable = false)
+    @JsonIgnore //prevents id from being converted to JSON
     private Long id;
-        @NotBlank(message = "First Name cant be blank")
-    @Size(min = 2, max = 50, message = "Must be between 2 and 50 chars")
 
+    @NotBlank(message = "First name cannot be blank")
+//    @Size(min = 2, max = 40)
     private String firstName;
     private String lastName;
-    @Email(message = "Email must be in email format ")
+
+//    @Email(message = "Email is not valid")
     private String email;
-//    @Pattern(regexp = "\\d{10}", message = "Must be all digits totalling 10")
+
+//    @Pattern(regexp = "\\d{10}", message = "Phone number must be exactly 10 digits")
     private String phoneNumber;
 
-    @JsonManagedReference
     @OneToOne(cascade = CascadeType.ALL)
-    @JoinColumn(name = "emergency_contact_id", referencedColumnName = "id")
+    @JoinColumn(name = "Emergency_contact_id", referencedColumnName = "id")
+    @JsonManagedReference // prevents re-occurrence of the same object
     private EmergencyContact emergencyContact;
 
+    @ManyToOne(cascade = {CascadeType.PERSIST, CascadeType.MERGE,
+            CascadeType.REFRESH, CascadeType.DETACH})
+    @JoinColumn(name = "department_id", referencedColumnName = "id")
     @JsonBackReference
-    @ManyToOne(cascade = { CascadeType.PERSIST, CascadeType.MERGE , CascadeType.DETACH, CascadeType.REFRESH })
-    @JoinColumn(name = "dept_id", referencedColumnName = "id")
     private Department department;
 
-
-    @ManyToMany( cascade = { CascadeType.PERSIST, CascadeType.MERGE , CascadeType.DETACH, CascadeType.REFRESH })
-    @JoinTable(name = "employee_project",
+    @ManyToMany( cascade = {CascadeType.PERSIST, CascadeType.MERGE,
+            CascadeType.REFRESH, CascadeType.DETACH})
+    @JoinTable(name =  "employee_project",
             joinColumns = @JoinColumn(name = "employee_id"),
             inverseJoinColumns = @JoinColumn(name = "project_id"))
     @JsonManagedReference
